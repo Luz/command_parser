@@ -1,0 +1,10 @@
+[package]
+name = "command_parser"
+version = "0.1.0"
+authors = ["Luz"]
+
+[dependencies]
+pest = "^1.0"
+pest_derive = "^1.0"
+ncurses = "^5.91"
+

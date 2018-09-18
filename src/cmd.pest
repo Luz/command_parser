@@ -1,0 +1,25 @@
+movement		= { down | up | left | right | start | end }
+down				= { "j" } //	\u{ff54}
+up					= { "k" } //	\u{ff52}
+left				= { "h" } //	\u{ff51}
+right				= { "l" } //	\u{ff53}
+start				= { "0" }
+end					= { "$" }
+
+replace			= { "r" }
+remove			= { "x" }
+insert			= { "i" }
+jumpascii		= { "J" }
+helpfile		= { "?" }
+search			= { "/" }
+quickstuff	= { (replace | remove | insert | jumpascii | helpfile | search) }
+
+saveandexit	= { "wq!" | "wq" } // careful, notice priority
+exit				= { "q!" | "q" } // careful, notice priority
+save				= { "w!" | "w" } // careful, notice priority
+cmd					= { ":" ~ ( saveandexit | exit | save ) }
+
+gatherall		= { any }
+
+cmd_list		= _{ ( movement | quickstuff | cmd | gatherall ) }
+
