@@ -68,19 +68,16 @@ fn main() {
                     Rule::save => {
                         printw("Saving");
                     }
+                    Rule::cmd_start => (),
                     Rule::escape => {
                         printw("hi");
                     }
                     Rule::not_escape => {
                         printw("why");
                     }
-                    Rule::gatherall => clear = false,
                     Rule::gatherone => clear = false,
                     _ => {
-                        printw(&format!(
-                            "no inner rule! {:?}",
-                            inner_cmd.clone().into_span().as_str()
-                        ));
+                        printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
                         clear = false;
                     }
                 };

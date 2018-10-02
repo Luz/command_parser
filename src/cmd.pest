@@ -17,7 +17,8 @@ quickstuff	= { (replace | remove | insert | jumpascii | helpfile | search) }
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
 save				= { "w!" | "w" } // careful, notice priority
-cmd					= { ":" ~ ( saveandexit | exit | save ) ~ "\n" }
+cmd_start		= { ":" }
+cmd					= { cmd_start ~ ( saveandexit | exit | save ) ~ "\n" }
 
 //until first escape happens
 not_escape = _{ !("\u{1b}") ~ any }
