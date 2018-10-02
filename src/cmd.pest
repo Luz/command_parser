@@ -1,8 +1,8 @@
 movement		= { down | up | left | right | start | end }
-down				= { "j" } //	\u{ff54}
-up					= { "k" } //	\u{ff52}
-left				= { "h" } //	\u{ff51}
-right				= { "l" } //	\u{ff53}
+down				= { "j" | "\u{1b}[B" }
+up					= { "k" }
+left				= { "h" }
+right				= { "l" }
 start				= { "0" }
 end					= { "$" }
 
@@ -17,9 +17,18 @@ quickstuff	= { (replace | remove | insert | jumpascii | helpfile | search) }
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
 save				= { "w!" | "w" } // careful, notice priority
-cmd					= { ":" ~ ( saveandexit | exit | save ) }
+cmd					= { ":" ~ ( saveandexit | exit | save ) ~ "\n" }
 
-gatherall		= { any }
+//until first escape happens
+not_escape = _{ !("\u{1b}") ~ any }
+escape = { not_escape* ~ "\u{1b}" }
+//TODO: try these alternatives:
+//escape = { any* ~ "\u{1b}" }
+//escape = { (!("\u{1b}"))* ~ "\u{1b}" }
 
-cmd_list		= _{ ( movement | quickstuff | cmd | gatherall ) }
+// Not escape and not Enter
+gatherone		= @{ !("\u{1b}" | "\n") ~ any }
+gatherall		= { gatherone* }
+
+cmd_list		= _{ ( movement | quickstuff | cmd | escape | gatherall ) }
 

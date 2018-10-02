@@ -12,40 +12,46 @@ use pest::Parser;
 struct IdentParser;
 
 fn main() {
-    let mut key;
-    let mut keystring;
+    let mut keystring = String::new();
     let mut quitnow = false;
 
     initscr();
 
-    printw("Starting command parsing:\n");
-
     while quitnow == false {
-        key = getch() as u8 as char;
-        keystring = key.clone().to_string();
-        //        keystring.clear();
-        //        keystring.push_str(":");
+        let key = std::char::from_u32(getch() as u32).unwrap();
+        printw(&format!("   {:?}   ", key));
+        keystring.push_str(&key.clone().to_string());
 
-        let commands = IdentParser::parse(Rule::cmd_list, &keystring)
+        let parsethisstring = keystring.clone();
+        let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring)
             .unwrap_or_else(|e| panic!("{}", e));
 
         for cmd in commands {
-            let span = cmd.clone().into_span();
-            printw(&format!(
-                "{:?}: {{{},{}}} {}",
-                cmd.as_rule(),
-                span.start(),
-                span.end(),
-                span.as_str()
-            ));
+            match cmd.as_rule() {
+                Rule::movement => {
+                    printw("movement: ");
+                }
+                Rule::quickstuff => {
+                    printw("quickstuff: ");
+                }
+                _ => (),
+            }
 
+            let mut clear = true;
             for inner_cmd in cmd.into_inner() {
-                let inner_span = inner_cmd.clone().into_span();
                 match inner_cmd.as_rule() {
-                    Rule::down => (),
-                    Rule::up => (),
-                    Rule::left => (),
-                    Rule::right => (),
+                    Rule::down => {
+                        printw(&format!("{:?}", inner_cmd.as_rule()));
+                    }
+                    Rule::up => {
+                        printw(&format!("{:?}", inner_cmd.as_rule()));
+                    }
+                    Rule::left => {
+                        printw(&format!("{:?}", inner_cmd.as_rule()));
+                    }
+                    Rule::right => {
+                        printw(&format!("{:?}", inner_cmd.as_rule()));
+                    }
                     Rule::start => (),
                     Rule::end => (),
                     Rule::replace => (),
@@ -54,17 +60,38 @@ fn main() {
                     Rule::jumpascii => (),
                     Rule::helpfile => (),
                     Rule::search => (),
-                    Rule::saveandexit => (),
+                    Rule::saveandexit => {
+                        printw("Saving...");
+                        quitnow = true;
+                    }
                     Rule::exit => quitnow = true,
-                    Rule::save => (),
-                    Rule::gatherall => (),
-                    _ => unreachable!(),
+                    Rule::save => {
+                        printw("Saving");
+                    }
+                    Rule::escape => {
+                        printw("hi");
+                    }
+                    Rule::not_escape => {
+                        printw("why");
+                    }
+                    Rule::gatherall => clear = false,
+                    Rule::gatherone => clear = false,
+                    _ => {
+                        printw(&format!(
+                            "no inner rule! {:?}",
+                            inner_cmd.clone().into_span().as_str()
+                        ));
+                        clear = false;
+                    }
                 };
-                printw(&format!(" ({})", inner_span.as_str()));
+            }
+            if clear {
+                keystring.clear();
+            } else {
+                printw(&format!(" {:?}", keystring));
             }
             printw("\n");
             refresh();
-
         }
     }
     endwin();
