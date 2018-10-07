@@ -28,38 +28,35 @@ fn main() {
 
         for cmd in commands {
             match cmd.as_rule() {
-                Rule::movement => {
-                    printw("movement: ");
+                Rule::down => {
+                    printw(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::quickstuff => {
                     printw("quickstuff: ");
                 }
+                Rule::up => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::left => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::right => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::start => (),
+                Rule::end => (),
+                Rule::replace => (),
+                Rule::remove => (),
+                Rule::insert => (),
+                Rule::jumpascii => (),
+                Rule::helpfile => (),
+                Rule::search => (),
                 _ => (),
             }
 
             let mut clear = true;
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
-                    Rule::down => {
-                        printw(&format!("{:?}", inner_cmd.as_rule()));
-                    }
-                    Rule::up => {
-                        printw(&format!("{:?}", inner_cmd.as_rule()));
-                    }
-                    Rule::left => {
-                        printw(&format!("{:?}", inner_cmd.as_rule()));
-                    }
-                    Rule::right => {
-                        printw(&format!("{:?}", inner_cmd.as_rule()));
-                    }
-                    Rule::start => (),
-                    Rule::end => (),
-                    Rule::replace => (),
-                    Rule::remove => (),
-                    Rule::insert => (),
-                    Rule::jumpascii => (),
-                    Rule::helpfile => (),
-                    Rule::search => (),
                     Rule::saveandexit => {
                         printw("Saving...");
                         quitnow = true;
