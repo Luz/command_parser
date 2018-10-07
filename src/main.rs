@@ -12,7 +12,7 @@ use pest::Parser;
 struct IdentParser;
 
 fn main() {
-    let mut keystring = String::new();
+    let mut command = String::new();
     let mut quitnow = false;
 
     initscr();
@@ -20,9 +20,9 @@ fn main() {
     while quitnow == false {
         let key = std::char::from_u32(getch() as u32).unwrap();
         printw(&format!("   {:?}   ", key));
-        keystring.push_str(&key.clone().to_string());
+        command.push_str(&key.clone().to_string());
 
-        let parsethisstring = keystring.clone();
+        let parsethisstring = command.clone();
         let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring)
             .unwrap_or_else(|e| panic!("{}", e));
 
@@ -83,9 +83,9 @@ fn main() {
                 };
             }
             if clear {
-                keystring.clear();
+                command.clear();
             } else {
-                printw(&format!(" {:?}", keystring));
+                printw(&format!(" {:?}", command));
             }
             printw("\n");
             refresh();
