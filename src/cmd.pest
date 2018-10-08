@@ -20,12 +20,8 @@ save				= { "w!" | "w" } // careful, notice priority
 cmd_start		= { ":" }
 cmd					= { cmd_start ~ ( saveandexit | exit | save ) ~ "\n" }
 
-//until first escape happens
-not_escape = _{ !("\u{1b}") ~ any }
-escape = { not_escape* ~ "\u{1b}" }
-//TODO: try these alternatives:
-//escape = { any* ~ "\u{1b}" }
-//escape = { (!("\u{1b}"))* ~ "\u{1b}" }
+// consume any "not escapes" until first escape
+escape = { (!("\u{1b}") ~ any)* ~ "\u{1b}" }
 
 // Not escape and not Enter
 gatherone		= @{ !("\u{1b}" | "\n") ~ any }

@@ -69,9 +69,6 @@ fn main() {
                     Rule::escape => {
                         printw("hi");
                     }
-                    Rule::not_escape => {
-                        printw("why");
-                    }
                     Rule::gatherone => clear = false,
                     _ => {
                         printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
