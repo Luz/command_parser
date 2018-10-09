@@ -26,6 +26,7 @@ fn main() {
         let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring)
             .unwrap_or_else(|e| panic!("{}", e));
 
+        let mut clear = true;
         for cmd in commands {
             match cmd.as_rule() {
                 Rule::down => {
@@ -55,7 +56,6 @@ fn main() {
                 _ => (),
             }
 
-            let mut clear = true;
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
                     Rule::saveandexit => {
