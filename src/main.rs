@@ -46,7 +46,10 @@ fn main() {
                 }
                 Rule::start => (),
                 Rule::end => (),
-                Rule::replace => (),
+                Rule::replace => {
+//                    printw("next char will be the replacement!");
+                    clear = false;
+                }
                 Rule::remove => (),
                 Rule::insert => (),
                 Rule::jumpascii => (),
@@ -58,6 +61,9 @@ fn main() {
 
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
+                    Rule::replacement => {
+                        printw(&format!("Replacement: {:?}", inner_cmd.as_str() ));
+                    }
                     Rule::saveandexit => {
                         printw("Saving...");
                         quitnow = true;

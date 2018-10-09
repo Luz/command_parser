@@ -6,13 +6,16 @@ right				= { "l" | "[C" }
 start				= { "0" }
 end					= { "$" }
 
+// Do not allow escape as replacement char
+replacement	= { !"\u{1b}" ~ any }
+replaceby		= { &replace ~ any ~ replacement }
 replace			= { "r" }
 remove			= { "x" }
 insert			= { "i" }
 jumpascii		= { "J" }
 helpfile		= { "?" }
 search			= { "/" }
-quickstuff	= _{ replace | remove | insert | jumpascii | helpfile | search }
+quickstuff	= _{ replaceby | replace | remove | insert | jumpascii | helpfile | search }
 
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
