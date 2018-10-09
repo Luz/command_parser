@@ -5,5 +5,5 @@ Example of a parser written in rust. It uses the pest-parser to deal with vim li
 Since the project [hexdino](https://github.com/Luz/hexdino) requires a more sophisticated logic than just some simple keybindings, this project should be a good base to simplify the code. It should be a nice playground.
 
 ## Related Projects
-[hexdino](https://github.com/Luz/hexdino)
-[pest-parser](https://github.com/pest-parser/pest)
+- [hexdino](https://github.com/Luz/hexdino)
+- [pest-parser](https://github.com/pest-parser/pest)
