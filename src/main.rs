@@ -51,6 +51,7 @@ fn main() {
                 Rule::jumpascii => (),
                 Rule::helpfile => (),
                 Rule::search => (),
+                Rule::escape => (),
                 _ => (),
             }
 
@@ -66,9 +67,6 @@ fn main() {
                         printw("Saving");
                     }
                     Rule::cmd_start => (),
-                    Rule::escape => {
-                        printw("hi");
-                    }
                     Rule::gatherone => clear = false,
                     _ => {
                         printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
