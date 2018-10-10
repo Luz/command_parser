@@ -51,7 +51,10 @@ fn main() {
                     clear = false;
                 }
                 Rule::remove => (),
-                Rule::insert => (),
+                Rule::insert => {
+                    printw("next chars will be inserted!");
+                    clear = false;
+                }
                 Rule::jumpascii => (),
                 Rule::helpfile => (),
                 Rule::search => (),
@@ -63,6 +66,11 @@ fn main() {
                 match inner_cmd.as_rule() {
                     Rule::replacement => {
                         printw(&format!("Replacement: {:?}", inner_cmd.as_str() ));
+                    }
+                    Rule::insertment => {
+                        printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
+                        command.pop(); // remove the just inserted thing
+                        clear = false;
                     }
                     Rule::saveandexit => {
                         printw("Saving...");

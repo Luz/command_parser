@@ -11,11 +11,13 @@ replacement	= { !"\u{1b}" ~ any }
 replaceby		= { &replace ~ any ~ replacement }
 replace			= { "r" }
 remove			= { "x" }
+insertment	= { !"\u{1b}" ~ any }
+insertby		= { &insert ~ any ~ insertment }
 insert			= { "i" }
 jumpascii		= { "J" }
 helpfile		= { "?" }
 search			= { "/" }
-quickstuff	= _{ replaceby | replace | remove | insert | jumpascii | helpfile | search }
+quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | search }
 
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
@@ -30,5 +32,5 @@ escape = { (!("\u{1b}") ~ any)* ~ "\u{1b}" }
 gatherone		= @{ !("\u{1b}" | "\n") ~ any }
 gatherall		= { gatherone* }
 
-cmd_list		= _{ ( movement | quickstuff | cmd | escape | gatherall ) }
+cmd_list		= _{ ( movement | escape | quickstuff | cmd | gatherall ) }
 
