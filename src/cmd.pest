@@ -22,8 +22,7 @@ quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | h
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
 save				= { "w!" | "w" } // careful, notice priority
-cmd_start		= { ":" }
-cmd					= { cmd_start ~ ( saveandexit | exit | save ) ~ "\n" }
+cmd					= { ":" ~ ( saveandexit | exit | save ) ~ "\n" }
 
 // consume any "not escapes" until first escape
 escape = { (!("\u{1b}") ~ any)* ~ "\u{1b}" }

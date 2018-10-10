@@ -80,7 +80,6 @@ fn main() {
                     Rule::save => {
                         printw("Saving");
                     }
-                    Rule::cmd_start => (),
                     Rule::gatherone => clear = false,
                     _ => {
                         printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
