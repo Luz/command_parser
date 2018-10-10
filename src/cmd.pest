@@ -16,7 +16,8 @@ insertby		= { &insert ~ any ~ insertment }
 insert			= { "i" }
 jumpascii		= { "J" }
 helpfile		= { "?" }
-search			= { "/" }
+searchstr		= { (!("\u{1b}" | "\n") ~ any)* }
+search			= { "/" ~ searchstr ~ "\n" }
 quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | search }
 
 saveandexit	= { "wq!" | "wq" } // careful, notice priority

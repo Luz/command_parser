@@ -72,6 +72,9 @@ fn main() {
                         command.pop(); // remove the just inserted thing
                         clear = false;
                     }
+                    Rule::searchstr => {
+                        printw(&format!("Searching for: {:?}", inner_cmd.as_str() ));
+                    }
                     Rule::saveandexit => {
                         printw("Saving...");
                         quitnow = true;
