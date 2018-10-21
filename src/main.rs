@@ -59,6 +59,11 @@ fn main() {
                 Rule::helpfile => (),
                 Rule::search => (),
                 Rule::escape => (),
+                Rule::backspace => {
+                    command.pop();
+                    command.pop();
+                    clear = false;
+                },
                 _ => (),
             }
 
