@@ -22,11 +22,12 @@ fn main() {
         printw(&format!("   {:?}   ", key));
         command.push_str(&key.clone().to_string());
 
-        let parsethisstring = command.clone();
-        let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring)
-            .unwrap_or_else(|e| panic!("{}", e));
-
         let mut clear = true;
+        let mut n_backspaces = 0;
+        {
+        let commands =
+            IdentParser::parse(Rule::cmd_list, &command).unwrap_or_else(|e| panic!("{}", e));
+
         for cmd in commands {
             match cmd.as_rule() {
                 Rule::down => {
@@ -47,7 +48,7 @@ fn main() {
                 Rule::start => (),
                 Rule::end => (),
                 Rule::replace => {
-//                    printw("next char will be the replacement!");
+                    // printw("next char will be the replacement!");
                     clear = false;
                 }
                 Rule::remove => (),
@@ -60,25 +61,24 @@ fn main() {
                 Rule::search => (),
                 Rule::escape => (),
                 Rule::backspace => {
-                    command.pop();
-                    command.pop();
                     clear = false;
-                },
+                    n_backspaces += 2;
+                }
                 _ => (),
             }
 
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
                     Rule::replacement => {
-                        printw(&format!("Replacement: {:?}", inner_cmd.as_str() ));
+                        printw(&format!("Replacement: {:?}", inner_cmd.as_str()));
                     }
                     Rule::insertment => {
                         printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
-                        command.pop(); // remove the just inserted thing
+                        n_backspaces += 1; // remove the just inserted thing
                         clear = false;
                     }
                     Rule::searchstr => {
-                        printw(&format!("Searching for: {:?}", inner_cmd.as_str() ));
+                        printw(&format!("Searching for: {:?}", inner_cmd.as_str()));
                     }
                     Rule::saveandexit => {
                         printw("Saving...");
@@ -95,13 +95,17 @@ fn main() {
                     }
                 };
             }
-            if clear {
-                command.clear();
-            } else {
-                printw(&format!(" {:?}", command));
-            }
-            printw("\n");
-            refresh();
+        }
+        }
+        if clear {
+            command.clear();
+        } else {
+            printw(&format!(" {:?}", command));
+        }
+        printw("\n");
+        refresh();
+        for _ in 0..n_backspaces {
+            command.pop();
         }
     }
     endwin();
