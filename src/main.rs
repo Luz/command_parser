@@ -25,77 +25,77 @@ fn main() {
         let mut clear = true;
         let mut n_backspaces = 0;
         {
-        let commands =
-            IdentParser::parse(Rule::cmd_list, &command).unwrap_or_else(|e| panic!("{}", e));
+            let commands =
+                IdentParser::parse(Rule::cmd_list, &command).unwrap_or_else(|e| panic!("{}", e));
 
-        for cmd in commands {
-            match cmd.as_rule() {
-                Rule::down => {
-                    printw(&format!("{:?}", cmd.as_rule()));
-                }
-                Rule::quickstuff => {
-                    printw("quickstuff: ");
-                }
-                Rule::up => {
-                    printw(&format!("{:?}", cmd.as_rule()));
-                }
-                Rule::left => {
-                    printw(&format!("{:?}", cmd.as_rule()));
-                }
-                Rule::right => {
-                    printw(&format!("{:?}", cmd.as_rule()));
-                }
-                Rule::start => (),
-                Rule::end => (),
-                Rule::replace => {
-                    // printw("next char will be the replacement!");
-                    clear = false;
-                }
-                Rule::remove => (),
-                Rule::insert => {
-                    printw("next chars will be inserted!");
-                    clear = false;
-                }
-                Rule::jumpascii => (),
-                Rule::helpfile => (),
-                Rule::search => (),
-                Rule::escape => (),
-                Rule::backspace => {
-                    clear = false;
-                    n_backspaces += 2;
-                }
-                _ => (),
-            }
-
-            for inner_cmd in cmd.into_inner() {
-                match inner_cmd.as_rule() {
-                    Rule::replacement => {
-                        printw(&format!("Replacement: {:?}", inner_cmd.as_str()));
+            for cmd in commands {
+                match cmd.as_rule() {
+                    Rule::down => {
+                        printw(&format!("{:?}", cmd.as_rule()));
                     }
-                    Rule::insertment => {
-                        printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
-                        n_backspaces += 1; // remove the just inserted thing
+                    Rule::quickstuff => {
+                        printw("quickstuff: ");
+                    }
+                    Rule::up => {
+                        printw(&format!("{:?}", cmd.as_rule()));
+                    }
+                    Rule::left => {
+                        printw(&format!("{:?}", cmd.as_rule()));
+                    }
+                    Rule::right => {
+                        printw(&format!("{:?}", cmd.as_rule()));
+                    }
+                    Rule::start => (),
+                    Rule::end => (),
+                    Rule::replace => {
+                        // printw("next char will be the replacement!");
                         clear = false;
                     }
-                    Rule::searchstr => {
-                        printw(&format!("Searching for: {:?}", inner_cmd.as_str()));
-                    }
-                    Rule::saveandexit => {
-                        printw("Saving...");
-                        quitnow = true;
-                    }
-                    Rule::exit => quitnow = true,
-                    Rule::save => {
-                        printw("Saving");
-                    }
-                    Rule::gatherone => clear = false,
-                    _ => {
-                        printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
+                    Rule::remove => (),
+                    Rule::insert => {
+                        printw("next chars will be inserted!");
                         clear = false;
                     }
-                };
+                    Rule::jumpascii => (),
+                    Rule::helpfile => (),
+                    Rule::search => (),
+                    Rule::escape => (),
+                    Rule::backspace => {
+                        clear = false;
+                        n_backspaces += 2;
+                    }
+                    _ => (),
+                }
+
+                for inner_cmd in cmd.into_inner() {
+                    match inner_cmd.as_rule() {
+                        Rule::replacement => {
+                            printw(&format!("Replacement: {:?}", inner_cmd.as_str()));
+                        }
+                        Rule::insertment => {
+                            printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
+                            n_backspaces += 1; // remove the just inserted thing
+                            clear = false;
+                        }
+                        Rule::searchstr => {
+                            printw(&format!("Searching for: {:?}", inner_cmd.as_str()));
+                        }
+                        Rule::saveandexit => {
+                            printw("Saving...");
+                            quitnow = true;
+                        }
+                        Rule::exit => quitnow = true,
+                        Rule::save => {
+                            printw("Saving");
+                        }
+                        Rule::gatherone => clear = false,
+                        _ => {
+                            printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
+                            clear = false;
+                        }
+                    };
+                }
             }
-        }
         }
         if clear {
             command.clear();
