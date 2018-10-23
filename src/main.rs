@@ -77,8 +77,11 @@ fn main() {
                         command.pop(); // remove the just inserted thing
                         clear = false;
                     }
-                    Rule::searchstr => {
-                        printw(&format!("Searching for: {:?}", inner_cmd.as_str() ));
+                    Rule::search_str => {
+                        printw(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
+                    }
+                    Rule::search_bytes => {
+                        printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
                     }
                     Rule::saveandexit => {
                         printw("Saving...");

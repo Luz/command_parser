@@ -16,9 +16,12 @@ insertby		= { &insert ~ any ~ insertment }
 insert			= { "i" }
 jumpascii		= { "J" }
 helpfile		= { "?" }
-searchstr		= { (!("\u{1b}" | "\n") ~ any)* }
-search			= { "/" ~ searchstr ~ "\n" }
-quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | search }
+search_str	= { (!("\u{1b}" | "\n") ~ any)* }
+search			= { "/" ~ search_str ~ "\n" }
+hex_digit		= @{ '0'..'9' | 'a'..'f' | 'A'..'F' }
+search_bytes	= { ( hex_digit{2} )* }
+hexsearch		= { "/" ~ search_bytes ~ "\n" }
+quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | hexsearch | search }
 
 saveandexit	= { "wq!" | "wq" } // careful, notice priority
 exit				= { "q!" | "q" } // careful, notice priority
