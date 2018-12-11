@@ -46,6 +46,12 @@ fn main() {
                 }
                 Rule::start => (),
                 Rule::end => (),
+                Rule::top => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::bottom => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
                 Rule::replace => {
 //                    printw("next char will be the replacement!");
                     clear = false;
@@ -64,6 +70,14 @@ fn main() {
                     command.pop();
                     clear = false;
                 },
+                Rule::saveandexit => {
+                    printw("Saving...");
+                    quitnow = true;
+                }
+                Rule::exit => quitnow = true,
+                Rule::save => {
+                    printw("Saving");
+                }
                 _ => (),
             }
 
@@ -77,16 +91,11 @@ fn main() {
                         command.pop(); // remove the just inserted thing
                         clear = false;
                     }
-                    Rule::searchstr => {
-                        printw(&format!("Searching for: {:?}", inner_cmd.as_str() ));
+                    Rule::search_str => {
+                        printw(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
                     }
-                    Rule::saveandexit => {
-                        printw("Saving...");
-                        quitnow = true;
-                    }
-                    Rule::exit => quitnow = true,
-                    Rule::save => {
-                        printw("Saving");
+                    Rule::search_bytes => {
+                        printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
                     }
                     Rule::gatherone => clear = false,
                     _ => {
