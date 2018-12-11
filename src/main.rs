@@ -70,6 +70,14 @@ fn main() {
                     command.pop();
                     clear = false;
                 },
+                Rule::saveandexit => {
+                    printw("Saving...");
+                    quitnow = true;
+                }
+                Rule::exit => quitnow = true,
+                Rule::save => {
+                    printw("Saving");
+                }
                 _ => (),
             }
 
@@ -88,14 +96,6 @@ fn main() {
                     }
                     Rule::search_bytes => {
                         printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
-                    }
-                    Rule::saveandexit => {
-                        printw("Saving...");
-                        quitnow = true;
-                    }
-                    Rule::exit => quitnow = true,
-                    Rule::save => {
-                        printw("Saving");
                     }
                     Rule::gatherone => clear = false,
                     _ => {
