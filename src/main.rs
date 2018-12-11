@@ -46,6 +46,12 @@ fn main() {
                 }
                 Rule::start => (),
                 Rule::end => (),
+                Rule::top => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::bottom => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
                 Rule::replace => {
 //                    printw("next char will be the replacement!");
                     clear = false;
