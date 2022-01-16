@@ -87,6 +87,10 @@ fn main() {
                     Rule::replacement => {
                         printw(&format!("Replacement: {:?}", inner_cmd.as_str() ));
                     }
+                    Rule::dd_lines => {
+                        let amount: usize = inner_cmd.as_str().parse().unwrap_or(1);
+                        printw(&format!("Delete {:?} lines", amount ));
+                    }
                     Rule::insertment => {
                         printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
                         command.pop(); // remove the just inserted thing

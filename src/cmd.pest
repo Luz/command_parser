@@ -12,6 +12,8 @@ replacement		= { !"\u{1b}" ~ any }
 replaceby		= { &replace ~ any ~ replacement }
 replace			= { "r" }
 remove			= { "x" }
+dd_lines		= { ('0'..'9')* }
+dd			= { dd_lines ~ "dd" }
 insertment		= { !"\u{1b}" ~ any }
 insertby		= { &insert ~ any ~ insertment }
 insert			= { "i" }
@@ -25,7 +27,7 @@ search_bytes		= { ( hex_digit{2} )* }
 hexsearch		= { "/" ~ search_bytes ~ "\n" }
 gg_line			= { ('0'..'9')* }
 gg			= { gg_line ~ "gg" }
-quickstuff		= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | repeat | hexsearch | search | gg }
+quickstuff		= _{ replaceby | replace | remove | dd | insertby | insert | jumpascii | helpfile | repeat | hexsearch | search | gg }
 
 saveandexit		= { (":" ~ ("wq!" | "wq") ~ "\n") | "ZZ" } // careful, notice priority
 exit			= { (":" ~ ("q!" | "q") ~ "\n") | "ZQ" } // careful, notice priority
