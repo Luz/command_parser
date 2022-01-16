@@ -41,8 +41,12 @@ fn main() {
                 Rule::right => {
                     printw(&format!("{:?}", cmd.as_rule()));
                 }
-                Rule::start => (),
-                Rule::end => (),
+                Rule::start => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
+                Rule::end => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
                 Rule::bottom => {
                     printw(&format!("{:?}", cmd.as_rule()));
                 }
@@ -50,22 +54,26 @@ fn main() {
 //                    printw("next char will be the replacement!");
                     clear = false;
                 }
-                Rule::remove => (),
+                Rule::remove => {
+                    printw(&format!("{:?}", cmd.as_rule()));
+                }
                 Rule::insert => {
                     printw("next chars will be inserted!");
                     clear = false;
                 }
                 Rule::jumpascii => (),
                 Rule::helpfile => (),
-                Rule::search => (),
-                Rule::escape => (),
                 Rule::repeat => {
                     printw("Repeating");
                     //clear = false;
                 }
+                Rule::search => (),
+                Rule::escape => {
+                    printw("Escape");
+                }
                 Rule::backspace => {
-                    command.pop();
-                    command.pop();
+                    command.pop(); // Removes the backspace
+                    command.pop(); // Removes the char before the backspace
                     clear = false;
                 },
                 Rule::saveandexit => {
