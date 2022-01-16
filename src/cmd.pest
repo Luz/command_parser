@@ -8,33 +8,34 @@ end			= { "$" }
 bottom			= { "G" }
 
 // Do not allow escape as replacement char
-replacement	= { !"\u{1b}" ~ any }
+replacement		= { !"\u{1b}" ~ any }
 replaceby		= { &replace ~ any ~ replacement }
 replace			= { "r" }
 remove			= { "x" }
-insertment	= { !"\u{1b}" ~ any }
+insertment		= { !"\u{1b}" ~ any }
 insertby		= { &insert ~ any ~ insertment }
 insert			= { "i" }
 jumpascii		= { "J" }
 helpfile		= { "?" }
-search_str	= { (!("\u{1b}" | "\n") ~ any)* }
+repeat			= { "." }
+search_str		= { (!("\u{1b}" | "\n") ~ any)* }
 search			= { "/" ~ search_str ~ "\n" }
 hex_digit		= @{ '0'..'9' | 'a'..'f' | 'A'..'F' }
-search_bytes	= { ( hex_digit{2} )* }
+search_bytes		= { ( hex_digit{2} )* }
 hexsearch		= { "/" ~ search_bytes ~ "\n" }
 gg_line			= { ('0'..'9')* }
 gg			= { gg_line ~ "gg" }
-quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | hexsearch | search | gg }
+quickstuff		= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | repeat | hexsearch | search | gg }
 
-saveandexit	= { (":" ~ ("wq!" | "wq") ~ "\n") | "ZZ" } // careful, notice priority
-exit				= { (":" ~ ("q!" | "q") ~ "\n") | "ZQ" } // careful, notice priority
-save				= { (":" ~ ("write!" | "write" | "w!" | "w") ~ "\n") } // careful, notice priority
-cmd					= _{ ( saveandexit | exit | save ) }
+saveandexit		= { (":" ~ ("wq!" | "wq") ~ "\n") | "ZZ" } // careful, notice priority
+exit			= { (":" ~ ("q!" | "q") ~ "\n") | "ZQ" } // careful, notice priority
+save			= { (":" ~ ("write!" | "write" | "w!" | "w") ~ "\n") } // careful, notice priority
+cmd			= _{ ( saveandexit | exit | save ) }
 
 // consume any "not escapes" until first escape
-escape = { (!("\u{1b}") ~ any)* ~ "\u{1b}" }
+escape			= { (!("\u{1b}") ~ any)* ~ "\u{1b}" }
 // consume any "not backspaces" until first backspace
-backspace = { (!("\u{7f}") ~ any)* ~ "\u{7f}" }
+backspace		= { (!("\u{7f}") ~ any)* ~ "\u{7f}" }
 
 // Not escape and not Enter
 gatherone		= @{ !("\u{1b}" | "\n") ~ any }

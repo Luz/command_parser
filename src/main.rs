@@ -62,6 +62,10 @@ fn main() {
                 Rule::helpfile => (),
                 Rule::search => (),
                 Rule::escape => (),
+                Rule::repeat => {
+                    printw("Repeating");
+                    //clear = false;
+                }
                 Rule::backspace => {
                     command.pop();
                     command.pop();
