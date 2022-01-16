@@ -96,10 +96,10 @@ fn main() {
                         command.pop(); // remove the just inserted thing
                         clear = false;
                     }
-                    Rule::search_str => {
+                    Rule::searchstr => {
                         printw(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
                     }
-                    Rule::search_bytes => {
+                    Rule::searchbytes => {
                         printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
                     }
                     Rule::gg_line => {
