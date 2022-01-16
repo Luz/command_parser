@@ -1,11 +1,10 @@
-movement		= _{ down | up | left | right | start | end | top | bottom }
-down				= { "j" | "[B" }
-up					= { "k" | "[A" }
-left				= { "h" | "[D" }
-right				= { "l" | "[C" }
-start				= { "0" }
-end					= { "$" }
-top					= { "gg" }
+movement		= _{ down | up | left | right | start | end | bottom }
+down			= { "j" | "[B" }
+up			= { "k" | "[A" }
+left			= { "h" | "[D" }
+right			= { "l" | "[C" }
+start			= { "0" }
+end			= { "$" }
 bottom			= { "G" }
 
 // Do not allow escape as replacement char
@@ -23,7 +22,9 @@ search			= { "/" ~ search_str ~ "\n" }
 hex_digit		= @{ '0'..'9' | 'a'..'f' | 'A'..'F' }
 search_bytes	= { ( hex_digit{2} )* }
 hexsearch		= { "/" ~ search_bytes ~ "\n" }
-quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | hexsearch | search }
+gg_line			= { ('0'..'9')* }
+gg			= { gg_line ~ "gg" }
+quickstuff	= _{ replaceby | replace | remove | insertby | insert | jumpascii | helpfile | hexsearch | search | gg }
 
 saveandexit	= { (":" ~ ("wq!" | "wq") ~ "\n") | "ZZ" } // careful, notice priority
 exit				= { (":" ~ ("q!" | "q") ~ "\n") | "ZQ" } // careful, notice priority

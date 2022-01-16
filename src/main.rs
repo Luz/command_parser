@@ -46,9 +46,6 @@ fn main() {
                 }
                 Rule::start => (),
                 Rule::end => (),
-                Rule::top => {
-                    printw(&format!("{:?}", cmd.as_rule()));
-                }
                 Rule::bottom => {
                     printw(&format!("{:?}", cmd.as_rule()));
                 }
@@ -96,6 +93,10 @@ fn main() {
                     }
                     Rule::search_bytes => {
                         printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
+                    }
+                    Rule::gg_line => {
+                        let linenr: usize = inner_cmd.as_str().parse().unwrap_or(0);
+                        printw(&format!("Jump to line: {:?}", linenr));
                     }
                     Rule::gatherone => clear = false,
                     _ => {
