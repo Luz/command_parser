@@ -32,9 +32,6 @@ fn main() {
                 Rule::down => {
                     printw(&format!("{:?}", cmd.as_rule()));
                 }
-                Rule::quickstuff => {
-                    printw("quickstuff: ");
-                }
                 Rule::up => {
                     printw(&format!("{:?}", cmd.as_rule()));
                 }
