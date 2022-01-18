@@ -100,8 +100,9 @@ fn main() {
                         addstr(&format!("Delete {:?} lines", amount));
                     }
                     Rule::insertment => {
-                        addstr(&format!("Inserted: {:?}", inner_cmd.as_str()));
-                        command.pop(); // remove the just inserted thing
+                        let last_char = command.chars().last().unwrap();
+                        addstr(&format!("Just inserted: {:?}", last_char));
+                        // Do not pop, keep it for history
                         clear = false;
                     }
                     Rule::searchstr => {
