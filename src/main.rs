@@ -19,7 +19,7 @@ fn main() {
 
     while quitnow == false {
         let key = std::char::from_u32(getch() as u32).unwrap();
-        printw(&format!("   {:?}   ", key));
+        addstr(&format!("   {:?}   ", key));
         command.push_str(&key.clone().to_string());
 
         let parsethisstring = command.clone();
@@ -30,62 +30,62 @@ fn main() {
         for cmd in commands {
             match cmd.as_rule() {
                 Rule::down => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::up => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::left => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::right => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::start => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::end => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::bottom => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::replace => {
-//                    printw("next char will be the replacement!");
+                    //addstr("next char will be the replacement!");
                     clear = false;
                 }
                 Rule::remove => {
-                    printw(&format!("{:?}", cmd.as_rule()));
+                    addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::insert => {
-                    printw("next chars will be inserted!");
+                    addstr("next chars will be inserted!");
                     clear = false;
                 }
                 Rule::jumpascii => (),
                 Rule::helpfile => {
                     command.pop();
-                    printw("No helpfile yet");
+                    addstr("No helpfile yet");
                 }
                 Rule::repeat => {
-                    printw("Repeating");
+                    addstr("Repeating");
                     //clear = false;
                 }
                 Rule::search => (),
                 Rule::escape => {
-                    printw("Escape");
+                    addstr("Escape");
                 }
                 Rule::backspace => {
                     command.pop(); // Removes the backspace
                     command.pop(); // Removes the char before the backspace
                     clear = false;
-                },
+                }
                 Rule::saveandexit => {
-                    printw("Saving...");
+                    addstr("Saving...");
                     quitnow = true;
                 }
                 Rule::exit => quitnow = true,
                 Rule::save => {
-                    printw("Saving");
+                    addstr("Saving");
                 }
                 _ => (),
             }
@@ -93,30 +93,30 @@ fn main() {
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
                     Rule::replacement => {
-                        printw(&format!("Replacement: {:?}", inner_cmd.as_str() ));
+                        addstr(&format!("Replacement: {:?}", inner_cmd.as_str()));
                     }
                     Rule::dd_lines => {
                         let amount: usize = inner_cmd.as_str().parse().unwrap_or(1);
-                        printw(&format!("Delete {:?} lines", amount ));
+                        addstr(&format!("Delete {:?} lines", amount));
                     }
                     Rule::insertment => {
-                        printw(&format!("Inserted: {:?}", inner_cmd.as_str()));
+                        addstr(&format!("Inserted: {:?}", inner_cmd.as_str()));
                         command.pop(); // remove the just inserted thing
                         clear = false;
                     }
                     Rule::searchstr => {
-                        printw(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
+                        addstr(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
                     }
                     Rule::searchbytes => {
-                        printw(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
+                        addstr(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
                     }
                     Rule::gg_line => {
                         let linenr: usize = inner_cmd.as_str().parse().unwrap_or(0);
-                        printw(&format!("Jump to line: {:?}", linenr));
+                        addstr(&format!("Jump to line: {:?}", linenr));
                     }
                     Rule::gatherone => clear = false,
                     _ => {
-                        printw(&format!("no rule for {:?} ", inner_cmd.as_rule()));
+                        addstr(&format!("no rule for {:?} ", inner_cmd.as_rule()));
                         clear = false;
                     }
                 };
@@ -124,9 +124,9 @@ fn main() {
             if clear {
                 command.clear();
             } else {
-                printw(&format!(" {:?}", command));
+                addstr(&format!(" {:?}", command));
             }
-            printw("\n");
+            addstr("\n");
             refresh();
         }
     }
