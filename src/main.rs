@@ -62,7 +62,10 @@ fn main() {
                     clear = false;
                 }
                 Rule::jumpascii => (),
-                Rule::helpfile => (),
+                Rule::helpfile => {
+                    command.pop();
+                    printw("No helpfile yet");
+                }
                 Rule::repeat => {
                     printw("Repeating");
                     //clear = false;
