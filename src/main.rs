@@ -51,8 +51,16 @@ fn main() {
                     addstr(&format!("{:?}", cmd.as_rule()));
                 }
                 Rule::replace => {
-                    //addstr("next char will be the replacement!");
+                    addstr("Next char will be the replacement!");
                     clear = false;
+                }
+                Rule::replacement => {
+                    addstr(&format!("Replacement: {:?}", cmd.as_str()));
+                    clear = true;
+                }
+                Rule::replaceend => {
+                    addstr("Replacement canceled.");
+                    clear = true;
                 }
                 Rule::remove => {
                     addstr(&format!("{:?}", cmd.as_rule()));
@@ -105,9 +113,6 @@ fn main() {
 
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
-                    Rule::replacement => {
-                        addstr(&format!("Replacement: {:?}", inner_cmd.as_str()));
-                    }
                     Rule::dd_lines => {
                         let amount: usize = inner_cmd.as_str().parse().unwrap_or(1);
                         addstr(&format!("Delete {:?} lines", amount));
