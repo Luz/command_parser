@@ -61,6 +61,16 @@ fn main() {
                     addstr("next chars will be inserted!");
                     clear = false;
                 }
+                Rule::insertstuff => {
+                    let last_char = command.chars().last().unwrap();
+                    addstr(&format!("Just inserted: {:?}", last_char));
+                    // Do not pop, keep it for history
+                    clear = false;
+                }
+                Rule::insertend => {
+                    addstr(&format!("Insert ended. ({:?})", command.clone()));
+                    clear = true;
+                }
                 Rule::jumpascii => (),
                 Rule::helpfile => {
                     command.pop();
@@ -101,12 +111,6 @@ fn main() {
                     Rule::dd_lines => {
                         let amount: usize = inner_cmd.as_str().parse().unwrap_or(1);
                         addstr(&format!("Delete {:?} lines", amount));
-                    }
-                    Rule::insertment => {
-                        let last_char = command.chars().last().unwrap();
-                        addstr(&format!("Just inserted: {:?}", last_char));
-                        // Do not pop, keep it for history
-                        clear = false;
                     }
                     Rule::searchstr => {
                         addstr(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
