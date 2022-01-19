@@ -87,7 +87,10 @@ fn main() {
                 Rule::save => {
                     addstr("Saving");
                 }
-                _ => (),
+                _ => {
+                    addstr(&format!("no rule for {:?} ", cmd.as_rule()));
+                    clear = false;
+                }
             }
 
             for inner_cmd in cmd.into_inner() {
