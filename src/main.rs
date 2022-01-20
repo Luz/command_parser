@@ -79,7 +79,10 @@ fn main() {
                     addstr(&format!("Insert ended. ({:?})", command.clone()));
                     clear = true;
                 }
-                Rule::jumpascii => (),
+                Rule::jumpascii => {
+                    addstr(&format!("{:?}", cmd.as_rule()));
+                    clear = true;
+                }
                 Rule::helpfile => {
                     command.pop();
                     addstr("No helpfile yet");
