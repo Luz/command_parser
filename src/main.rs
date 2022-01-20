@@ -65,6 +65,11 @@ fn main() {
                 Rule::remove => {
                     addstr(&format!("{:?}", cmd.as_rule()));
                 }
+                Rule::dd => {
+                    let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                    addstr(&format!("Delete {:?} lines", amount));
+                    clear = true;
+                }
                 Rule::insert => {
                     addstr("next chars will be inserted!");
                     clear = false;
@@ -116,10 +121,6 @@ fn main() {
 
             for inner_cmd in cmd.into_inner() {
                 match inner_cmd.as_rule() {
-                    Rule::dd_lines => {
-                        let amount: usize = inner_cmd.as_str().parse().unwrap_or(1);
-                        addstr(&format!("Delete {:?} lines", amount));
-                    }
                     Rule::searchstr => {
                         addstr(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
                     }
