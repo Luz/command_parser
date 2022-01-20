@@ -97,6 +97,11 @@ fn main() {
                     //clear = false;
                 }
                 Rule::search => (),
+                Rule::gg => {
+                    let linenr: usize = cmd.as_str().parse().unwrap_or(0);
+                    addstr(&format!("Jump to line: {:?}", linenr));
+                    clear = true;
+                }
                 Rule::escape => {
                     addstr("Escape");
                 }
@@ -126,10 +131,6 @@ fn main() {
                     }
                     Rule::searchbytes => {
                         addstr(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
-                    }
-                    Rule::gg_line => {
-                        let linenr: usize = inner_cmd.as_str().parse().unwrap_or(0);
-                        addstr(&format!("Jump to line: {:?}", linenr));
                     }
                     Rule::gatherone => clear = false,
                     _ => {
