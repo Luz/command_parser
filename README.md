@@ -1,5 +1,5 @@
 # command_parser
-Example of a parser written in rust. It uses the pest-parser to deal with vim like keybindings and demonstrates the results with ncurses.
+Example of a parser written in rust. It uses the pest-parser to deal with vim like keybindings and demonstrates the results in crossterm.
 
 ## Purpose of this project
 Since the project [hexdino](https://github.com/Luz/hexdino) requires a more sophisticated logic than just some simple keybindings, this project should be a good base to simplify the code. It should be a nice playground.
@@ -7,3 +7,4 @@ Since the project [hexdino](https://github.com/Luz/hexdino) requires a more soph
 ## Related Projects
 - [hexdino](https://github.com/Luz/hexdino)
 - [pest-parser](https://github.com/pest-parser/pest)
+- [crossterm_evaluationser](https://github.com/Luz/crossterm_evaluation)

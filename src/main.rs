@@ -1,5 +1,18 @@
-extern crate ncurses;
-use ncurses::*;
+extern crate crossterm;
+use crossterm::event::{read, Event};
+use crossterm::{
+    cursor, queue,
+    style::Print,
+    terminal,
+    terminal::{disable_raw_mode, enable_raw_mode},
+    Result,
+};
+
+mod keycodes;
+use keycodes::extract;
+
+use std::io::prelude::*;
+use std::io::stdout;
 
 extern crate pest;
 #[macro_use]
@@ -11,16 +24,47 @@ use pest::Parser;
 #[grammar = "cmd.pest"]
 struct CmdParser;
 
-fn main() {
+fn main() -> Result<()> {
     let mut command = String::new();
+    let mut autoparse = String::new();
+
+    let mut out = stdout();
+
+    let screensize = crossterm::terminal::size()?;
+    let screenheight = screensize.1;
+
+    queue!(out, terminal::Clear(terminal::ClearType::All))?;
+    queue!(out, cursor::MoveTo(0, 0))?;
+    queue!(out, Print("Screenheight is ".to_string()))?;
+    queue!(out, Print(screenheight.to_string()))?;
+    queue!(out, Print("\n\r"))?;
+    out.flush()?;
+
+    enable_raw_mode()?;
+
     let mut quitnow = false;
-
-    initscr();
-
     while quitnow == false {
-        let key = std::char::from_u32(getch() as u32).unwrap();
-        addstr(&format!("   {:?}   ", key));
-        command.push_str(&key.clone().to_string());
+        if autoparse.is_empty() {
+            let key = read()?;
+            let mut keycode: char = '\u{00}';
+            // This is close to the old c-style 'getch()':
+            match key {
+                Event::Key(event) => {
+                    keycode = extract(event.code).unwrap_or('\u{00}');
+                }
+                Event::Mouse(_event) => (), // This can be handled later
+                Event::FocusGained => (),   // This can be handled later
+                Event::FocusLost => (),     // This can be handled later
+                Event::Paste(_text) => (),  // This can be handled later
+                Event::Resize(_width, _height) => (), // This can be handled later
+            };
+            command.push_str(&keycode.clone().to_string());
+        } else {
+            command.push(autoparse.chars().nth(0).unwrap());
+            autoparse.remove(0);
+        }
+
+        //        command.push_str(&key.clone().to_string());
 
         let parsethisstring = command.clone();
         let cmd = CmdParser::parse(Rule::cmd_list, &parsethisstring)
@@ -32,89 +76,98 @@ fn main() {
 
         match cmd.as_rule() {
             Rule::down => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                let text: String = format!("{:?}", cmd.as_rule());
+                queue!(out, Print(text))?;
             }
             Rule::up => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::left => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::right => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::start => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::end => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::bottom => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::replace => {
-                addstr("Next char will be the replacement!");
+                let text = "Next char will be the replacement!";
+                queue!(out, Print(text))?;
                 clear = false;
             }
             Rule::replacement => {
-                addstr(&format!("Replacement: {:?}", cmd.as_str()));
+                let text: String = format!("Replacement: {:?}", cmd.as_rule());
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::replaceend => {
-                addstr("Replacement canceled.");
+                queue!(out, Print("Replacement canceled."))?;
                 clear = true;
             }
             Rule::remove => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::dd => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
-                addstr(&format!("Delete {:?} lines", amount));
+                let text: String = format!("Delete {:?} lines", amount);
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::insert => {
-                addstr("next chars will be inserted!");
+                queue!(out, Print("next chars will be inserted!"))?;
                 clear = false;
             }
             Rule::insertstuff => {
                 let last_char = command.chars().last().unwrap();
-                addstr(&format!("Just inserted: {:?}", last_char));
+                let text = format!("Just inserted: {:?}", last_char);
+                queue!(out, Print(text))?;
                 // Do not pop, keep it for history
                 clear = false;
             }
             Rule::insertend => {
-                addstr(&format!("Insert ended. ({:?})", command.clone()));
+                let text: String = format!("Insert ended. ({:?})", command.clone());
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::jumpascii => {
-                addstr(&format!("{:?}", cmd.as_rule()));
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
                 clear = true;
             }
             Rule::helpfile => {
                 command.pop();
-                addstr("No helpfile yet");
+                queue!(out, Print("no helpfile yet"))?;
             }
             Rule::repeat => {
-                addstr("Repeating");
+                queue!(out, Print("Repeating"))?;
                 //clear = false;
             }
             Rule::gg => {
                 let linenr: usize = cmd.as_str().parse().unwrap_or(0);
-                addstr(&format!("Jump to line: {:?}", linenr));
+                let text: String = format!("Jump to line: {:?}", linenr);
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::searchend => {
                 let searchstr = cmd.clone().into_inner().as_str();
-                addstr(&format!("Searching for ascii: {:?}", searchstr));
+                let text: String = format!("Searching for ascii: {:?}", searchstr);
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::hexsearchend => {
                 let searchbytes = cmd.clone().into_inner().as_str();
-                addstr(&format!("Searching for bytes: {:?}", searchbytes));
+                let text: String = format!("Searching for bytes: {:?}", searchbytes);
+                queue!(out, Print(text))?;
                 clear = true;
             }
             Rule::escape => {
-                addstr("Escape");
+                queue!(out, Print("Escape"))?;
             }
             Rule::backspace => {
                 command.pop(); // Removes the backspace
@@ -122,28 +175,34 @@ fn main() {
                 clear = false;
             }
             Rule::saveandexit => {
-                addstr("Saving...");
+                queue!(out, Print("Saving..."))?;
                 quitnow = true;
             }
             Rule::exit => quitnow = true,
             Rule::save => {
-                addstr("Saving");
+                queue!(out, Print("Saving..."))?;
             }
             Rule::gatherall => {
                 clear = false;
             }
             _ => {
-                addstr(&format!("no rule for {:?} ", cmd.as_rule()));
+                let text: String = format!("no rule for {:?}", cmd.as_rule());
+                queue!(out, Print(text))?;
                 clear = false;
             }
         }
         if clear {
             command.clear();
         } else {
-            addstr(&format!(" {:?}", command));
+            queue!(out, Print(command.clone()))?;
         }
-        addstr("\n");
-        refresh();
+
+        // Make a newline and go to the start of the line
+        queue!(out, Print("\n\r"))?;
+//        queue!(out, cursor::MoveTo(0, 0))?;
+        out.flush()?;
     }
-    endwin();
+    queue!(out, terminal::Clear(terminal::ClearType::All))?;
+    disable_raw_mode()?;
+    Ok(())
 }
