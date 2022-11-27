@@ -95,6 +95,11 @@ fn main() {
                     addstr("Repeating");
                     //clear = false;
                 }
+                Rule::gg => {
+                    let linenr: usize = cmd.as_str().parse().unwrap_or(0);
+                    addstr(&format!("Jump to line: {:?}", linenr));
+                    clear = true;
+                }
                 Rule::searchend => {
                     let searchstr = cmd.clone().into_inner().as_str();
                     addstr(&format!("Searching for ascii: {:?}", searchstr));
@@ -103,11 +108,6 @@ fn main() {
                 Rule::hexsearchend => {
                     let searchbytes = cmd.clone().into_inner().as_str();
                     addstr(&format!("Searching for bytes: {:?}", searchbytes));
-                    clear = true;
-                }
-                Rule::gg => {
-                    let linenr: usize = cmd.as_str().parse().unwrap_or(0);
-                    addstr(&format!("Jump to line: {:?}", linenr));
                     clear = true;
                 }
                 Rule::escape => {
