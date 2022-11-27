@@ -96,7 +96,8 @@ fn main() {
                     addstr("Repeating");
                     //clear = false;
                 }
-                Rule::search => (),
+                Rule::searchend => (),
+                Rule::hexsearchend => (),
                 Rule::gg => {
                     let linenr: usize = cmd.as_str().parse().unwrap_or(0);
                     addstr(&format!("Jump to line: {:?}", linenr));
@@ -118,6 +119,9 @@ fn main() {
                 Rule::save => {
                     addstr("Saving");
                 }
+                Rule::gatherall => {
+                    clear = false;
+                }
                 _ => {
                     addstr(&format!("no rule for {:?} ", cmd.as_rule()));
                     clear = false;
@@ -132,7 +136,6 @@ fn main() {
                     Rule::searchbytes => {
                         addstr(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
                     }
-                    Rule::gatherone => clear = false,
                     _ => {
                         addstr(&format!("no rule for {:?} ", inner_cmd.as_rule()));
                         clear = false;
