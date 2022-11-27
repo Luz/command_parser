@@ -76,8 +76,7 @@ fn main() -> Result<()> {
 
         match cmd.as_rule() {
             Rule::down => {
-                let text: String = format!("{:?}", cmd.as_rule());
-                queue!(out, Print(text))?;
+                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::up => {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
@@ -103,7 +102,8 @@ fn main() -> Result<()> {
                 clear = false;
             }
             Rule::replacement => {
-                let text: String = format!("Replacement: {:?}", cmd.as_rule());
+                let k = command.chars().last().unwrap_or('x');
+                let text = format!("Replacement: {:?}", k);
                 queue!(out, Print(text))?;
                 clear = true;
             }
@@ -199,7 +199,7 @@ fn main() -> Result<()> {
 
         // Make a newline and go to the start of the line
         queue!(out, Print("\n\r"))?;
-//        queue!(out, cursor::MoveTo(0, 0))?;
+        // queue!(out, cursor::MoveTo(0, 0))?;
         out.flush()?;
     }
     queue!(out, terminal::Clear(terminal::ClearType::All))?;

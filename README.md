@@ -7,4 +7,4 @@ Since the project [hexdino](https://github.com/Luz/hexdino) requires a more soph
 ## Related Projects
 - [hexdino](https://github.com/Luz/hexdino)
 - [pest-parser](https://github.com/pest-parser/pest)
-- [crossterm_evaluationser](https://github.com/Luz/crossterm_evaluation)
+- [crossterm_evaluation](https://github.com/Luz/crossterm_evaluation)
