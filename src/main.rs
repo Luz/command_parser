@@ -23,8 +23,7 @@ fn main() {
         command.push_str(&key.clone().to_string());
 
         let parsethisstring = command.clone();
-        let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring)
-            .unwrap_or_else(|e| panic!("{}", e));
+        let commands = IdentParser::parse(Rule::cmd_list, &parsethisstring).unwrap();
 
         let mut clear = true;
         for cmd in commands {
@@ -128,16 +127,16 @@ fn main() {
                 }
             }
 
-            for inner_cmd in cmd.into_inner() {
-                match inner_cmd.as_rule() {
+            for inner in cmd.into_inner() {
+                match inner.as_rule() {
                     Rule::searchstr => {
-                        addstr(&format!("Searching for ascii: {:?}", inner_cmd.as_str()));
+                        addstr(&format!("Searching for ascii: {:?}", inner.as_str()));
                     }
                     Rule::searchbytes => {
-                        addstr(&format!("Searching for bytes: {:?}", inner_cmd.as_str()));
+                        addstr(&format!("Searching for bytes: {:?}", inner.as_str()));
                     }
                     _ => {
-                        addstr(&format!("no rule for {:?} ", inner_cmd.as_rule()));
+                        addstr(&format!("no inner rule for {:?} ", inner.as_rule()));
                         clear = false;
                     }
                 };
