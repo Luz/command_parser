@@ -95,8 +95,16 @@ fn main() {
                     addstr("Repeating");
                     //clear = false;
                 }
-                Rule::searchend => (),
-                Rule::hexsearchend => (),
+                Rule::searchend => {
+                    let searchstr = cmd.clone().into_inner().as_str();
+                    addstr(&format!("Searching for ascii: {:?}", searchstr));
+                    clear = true;
+                }
+                Rule::hexsearchend => {
+                    let searchbytes = cmd.clone().into_inner().as_str();
+                    addstr(&format!("Searching for bytes: {:?}", searchbytes));
+                    clear = true;
+                }
                 Rule::gg => {
                     let linenr: usize = cmd.as_str().parse().unwrap_or(0);
                     addstr(&format!("Jump to line: {:?}", linenr));
@@ -125,21 +133,6 @@ fn main() {
                     addstr(&format!("no rule for {:?} ", cmd.as_rule()));
                     clear = false;
                 }
-            }
-
-            for inner in cmd.into_inner() {
-                match inner.as_rule() {
-                    Rule::searchstr => {
-                        addstr(&format!("Searching for ascii: {:?}", inner.as_str()));
-                    }
-                    Rule::searchbytes => {
-                        addstr(&format!("Searching for bytes: {:?}", inner.as_str()));
-                    }
-                    _ => {
-                        addstr(&format!("no inner rule for {:?} ", inner.as_rule()));
-                        clear = false;
-                    }
-                };
             }
             if clear {
                 command.clear();
