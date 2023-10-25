@@ -140,9 +140,9 @@ fn main() -> Result<()> {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
                 clear = true;
             }
-            Rule::helpfile => {
+            Rule::querry => {
                 command.pop();
-                queue!(out, Print("no helpfile yet"))?;
+                queue!(out, Print("no querry yet"))?;
             }
             Rule::repeat => {
                 queue!(out, Print("Repeating"))?;
