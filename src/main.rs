@@ -82,10 +82,12 @@ fn main() -> Result<()> {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::left => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                queue!(out, Print(&format!("{:?} left", amount)))?;
             }
             Rule::right => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                queue!(out, Print(&format!("{:?} right", amount)))?;
             }
             Rule::start => {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
