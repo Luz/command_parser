@@ -94,7 +94,9 @@ fn main() -> Result<()> {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
             Rule::bottom => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let linenr: usize = cmd.as_str().parse().unwrap_or(0);
+                let text: String = format!("Jump to line: {:?}", linenr);
+                queue!(out, Print(text))?;
             }
             Rule::replace => {
                 let text = "Next char will be the replacement!";
