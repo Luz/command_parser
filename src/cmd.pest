@@ -1,11 +1,12 @@
-movement		= _{ down | up | left | right | start | end }
+movement		= _{ down | up | left | right | bottom | top | start | end }
 down			= { "j" | "[B" }
 up			= { "k" | "[A" }
 left			= { ASCII_DIGIT* ~ &("h" | "[D") }
 right			= { ASCII_DIGIT* ~ &("l" | "[C") }
+bottom			= { ASCII_DIGIT* ~ &"G" }
+top			= { ASCII_DIGIT* ~ &"gg" }
 start			= { "0" }
 end			= { "$" }
-bottom			= { ASCII_DIGIT* ~ &"G" }
 
 replace			= { "r" }
 replacement		= { &replace ~ ANY ~ (anything_but_escape) }
@@ -17,9 +18,8 @@ insertend		= { &insert ~ ANY ~ (anything_but_escape)* ~ escape_char }
 jumpascii		= { "J" }
 querry			= { "?" }
 repeat			= { "." }
-gg			= { ASCII_DIGIT* ~ &"gg" }
 
-quickstuffescaped	= _{ insertend | insertstuff | insert | remove | dd | jumpascii | querry | repeat | gg | bottom }
+quickstuffescaped	= _{ insertend | insertstuff | insert | remove | dd | jumpascii | querry | repeat }
 
 search			= { "/" }
 searchstr		= { (!(escape_char | NEWLINE) ~ ANY)* }

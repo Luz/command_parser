@@ -100,6 +100,12 @@ fn main() -> Result<()> {
                 let text: String = format!("Jump to line: {:?}", linenr);
                 queue!(out, Print(text))?;
             }
+            Rule::top => {
+                let linenr: usize = cmd.as_str().parse().unwrap_or(0);
+                let text: String = format!("Jump to line: {:?}", linenr);
+                queue!(out, Print(text))?;
+                clear = true;
+            }
             Rule::replace => {
                 let text = "Next char will be the replacement!";
                 queue!(out, Print(text))?;
@@ -147,12 +153,6 @@ fn main() -> Result<()> {
             Rule::repeat => {
                 queue!(out, Print("Repeating"))?;
                 //clear = false;
-            }
-            Rule::gg => {
-                let linenr: usize = cmd.as_str().parse().unwrap_or(0);
-                let text: String = format!("Jump to line: {:?}", linenr);
-                queue!(out, Print(text))?;
-                clear = true;
             }
             Rule::searchend => {
                 let searchstr = cmd.clone().into_inner().as_str();
