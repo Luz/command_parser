@@ -111,10 +111,6 @@ fn main() -> Result<()> {
                 queue!(out, Print(text))?;
                 clear = true;
             }
-            Rule::replaceend => {
-                queue!(out, Print("Replacement canceled."))?;
-                clear = true;
-            }
             Rule::remove => {
                 queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
             }
