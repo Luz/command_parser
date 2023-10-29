@@ -76,10 +76,12 @@ fn main() -> Result<()> {
 
         match cmd.as_rule() {
             Rule::down => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                queue!(out, Print(&format!("{} {:?}", amount, cmd.as_rule())))?;
             }
             Rule::up => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                queue!(out, Print(&format!("{} {:?}", amount cmd.as_rule())))?;
             }
             Rule::left => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);

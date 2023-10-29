@@ -1,6 +1,6 @@
 movement		= _{ down | up | left | right | bottom | top | start | end }
-down			= { "j" | "[B" }
-up			= { "k" | "[A" }
+down			= { ASCII_DIGIT* ~ &("j" | "[B") }
+up			= { ASCII_DIGIT* ~ &("k" | "[A") }
 left			= { ASCII_DIGIT* ~ &("h" | "[D") }
 right			= { ASCII_DIGIT* ~ &("l" | "[C") }
 bottom			= { ASCII_DIGIT* ~ &"G" }
