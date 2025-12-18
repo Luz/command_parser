@@ -130,6 +130,10 @@ fn main() -> Result<()> {
                 queue!(out, Print(text))?;
                 clear = true;
             }
+            Rule::bigd => {
+                queue!(out, Print("Delete till end of line"))?;
+                clear = true;
+            }
             Rule::insert => {
                 queue!(out, Print("next chars will be inserted!"))?;
                 clear = false;
