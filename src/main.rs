@@ -120,7 +120,9 @@ fn main() -> Result<()> {
                 clear = true;
             }
             Rule::remove => {
-                queue!(out, Print(&format!("{:?}", cmd.as_rule())))?;
+                let amount: usize = cmd.as_str().parse().unwrap_or(1);
+                let text: String = format!("Remove {:?} chars", amount);
+                queue!(out, Print(text))?;
             }
             Rule::dd => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
