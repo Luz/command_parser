@@ -81,7 +81,7 @@ fn main() -> Result<()> {
             }
             Rule::up => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
-                queue!(out, Print(&format!("{} {:?}", amount cmd.as_rule())))?;
+                queue!(out, Print(&format!("{} {:?}", amount, cmd.as_rule())))?;
             }
             Rule::left => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
