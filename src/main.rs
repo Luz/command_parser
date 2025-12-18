@@ -194,9 +194,9 @@ fn main() -> Result<()> {
                 clear = false;
             }
             _ => {
-                let text: String = format!("no rule for {:?}", cmd.as_rule());
+                let text: String = format!("Forgot to make the rule for {:?}", cmd.as_rule());
                 queue!(out, Print(text))?;
-                clear = false;
+                clear = true;
             }
         }
         if clear {
