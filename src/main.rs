@@ -124,6 +124,11 @@ fn main() -> Result<()> {
                 let text: String = format!("Remove {:?} chars", amount);
                 queue!(out, Print(text))?;
             }
+            Rule::remove_left => {
+                let amount: usize = cmd.into_inner().as_str().parse().unwrap_or(1);
+                let text: String = format!("Remove {:?} chars to the left", amount);
+                queue!(out, Print(text))?;
+            }
             Rule::dd => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
                 let text: String = format!("Delete {:?} lines", amount);
