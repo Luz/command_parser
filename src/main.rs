@@ -139,6 +139,11 @@ fn main() -> Result<()> {
                 let text: String = format!("Remove current line and {:?} more down", amount);
                 queue!(out, Print(text))?;
             }
+            Rule::remove_up => {
+                let amount: usize = cmd.into_inner().as_str().parse().unwrap_or(1);
+                let text: String = format!("Remove current line and {:?} more up", amount);
+                queue!(out, Print(text))?;
+            }
             Rule::dd => {
                 let amount: usize = cmd.as_str().parse().unwrap_or(1);
                 let text: String = format!("Delete {:?} lines", amount);
